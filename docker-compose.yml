@@ -26,5 +26,7 @@ services:
         - .:/docker-server
       expose:
         - "8000"
+      environment:
+        - REDIS_HOST=redis
       depends_on:
         - redis
