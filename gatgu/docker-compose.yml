@@ -7,15 +7,24 @@ services:
       volumes:
         - .:/docker-server
         - ./gatgu/nginx:/etc/nginx/conf.d
-          #- "${EB_LOG_BASE_DIR}/nginx:/var/log/nginx"
+        - ./static/:/static
+        - ${EB_LOG_BASE_DIR}/nginx:/var/log/nginx
       depends_on:
         - web
+    redis:
+      image: redis:latest
+      command: redis-server --port 6379
+      labels:
+        - "name=redis"
+        - "mode=standalone"
+      ports:
+        - "6379:6379"
     web:
-      build:
-        context: ./
-        dockerfile : Dockerfile
+      image: noaarhk/gatgu:latest
       command: gunicorn gatgu.wsgi:application --bind 0.0.0.0:8000
       volumes:
         - .:/docker-server
       expose:
         - "8000"
+      depends_on:
+        - redis
