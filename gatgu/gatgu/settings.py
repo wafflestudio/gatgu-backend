@@ -56,6 +56,7 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             "hosts": [('localhost', 6379)],
+            # "hosts": [('redis_host', 6379)],
         }
     }
 }
@@ -155,7 +156,7 @@ CACHES = {
 
     }
 }
-REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
+redis_host = os.environ.get('REDIS_HOST', '127.0.0.1')
 
 
 # Password validation

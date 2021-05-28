@@ -12,13 +12,14 @@ services:
       depends_on:
         - web
     redis:
-      image: redis:latest
-      command: redis-server --port 6379 
+      image: redis:6.2.1
+      command: redis-server --port 6379
+      hostname: redis
       labels:
         - "name=redis"
         - "mode=standalone"
       ports:
-        - "6379:6379"
+        - 6379:6379
     web:
       #      image: noaarhk/gatgu:latest
       build:
