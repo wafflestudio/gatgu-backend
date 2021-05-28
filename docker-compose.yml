@@ -17,13 +17,13 @@ services:
       labels:
         - "name=redis"
         - "mode=standalone"
-      ports:
-        - "6379:6379"
+      expose:
+        - "6379"
     web:
       image: noaarhk/gatgu:latest
       command: gunicorn gatgu.wsgi:application --bind 0.0.0.0:8000
       volumes:
-        - .:/docker-server
+        - ./gatgu:/docker-server
       expose:
         - "8000"
       depends_on:
