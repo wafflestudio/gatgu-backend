@@ -13,14 +13,17 @@ services:
         - web
     redis:
       image: redis:latest
-      command: redis-server --port 6379
+      command: redis-server --port 6379 
       labels:
         - "name=redis"
         - "mode=standalone"
       ports:
         - "6379:6379"
     web:
-      image: noaarhk/gatgu:latest
+      #      image: noaarhk/gatgu:latest
+      build:
+          context: ./
+          dockerfile : Dockerfile
       command: gunicorn gatgu.wsgi:application --bind 0.0.0.0:8000
       volumes:
         - .:/docker-server
