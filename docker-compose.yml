@@ -6,8 +6,8 @@ services:
         - "80:80"
       volumes:
         - .:/docker-server
-        - ./gatgu/nginx:/etc/nginx/conf.d
-        - ./static/:/static
+        - ./gatgu/gatgu/nginx:/etc/nginx/conf.d
+        - ./gatgu/static/:/static
         - ${EB_LOG_BASE_DIR}/nginx:/var/log/nginx
       depends_on:
         - web
