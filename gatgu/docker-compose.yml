@@ -3,7 +3,7 @@ services:
     nginx:
       image: nginx:latest
       ports:
-        - "80:80"
+        - 80:80
       volumes:
         - .:/docker-server
         - ./gatgu/nginx:/etc/nginx/conf.d
@@ -23,8 +23,8 @@ services:
     web:
       #      image: noaarhk/gatgu:latest
       build:
-          context: ./
-          dockerfile : Dockerfile
+        context: ./
+        dockerfile : Dockerfile
       command: gunicorn gatgu.wsgi:application --bind 0.0.0.0:8000
       volumes:
         - .:/docker-server
