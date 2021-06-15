@@ -47,14 +47,17 @@ class OrderChatViewSet(viewsets.GenericViewSet):
         participants = [str(participant['order_chat_id']) for participant in
                         ParticipantProfile.objects.filter(participant_id=user_id).values('order_chat_id')]
         return participants
-    #
-    # def list(self, request):  # get: /chat/
-    #     user = request.user
-    #     if user is None or not user.is_active:
-    #         return Response('message: 탈퇴하거나 없는 회원입니다.', status=status.HTTP_403_FORBIDDEN)
-    #     queryset = User.objects.get(id=user.id).order_chat
-    #     serializer = SimpleOrderChatSerializer(queryset, many=True)
-    #     return Response(serializer.data)
+
+    def list(self, request):  # get: /chat/
+        user = request.user
+        if user is None:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        queryset = User.objects.get(id=user.id).order_chat.all()
+        writerset = OrderChat.objects.filter(article__writer=user)
+        queryset = queryset | writerset
+        serializer = SimpleOrderChatSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
     # get one chat
     def retrieve(self, request, pk=None):  # get: /chat/{chat_id}/
@@ -70,10 +73,12 @@ class OrderChatViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_200_OK)
         elif pk in self.chat_list(user_id):
             return Response(status=status.HTTP_200_OK)
-        else:
+        elif article.order_chat.order_status==1:
             participant = ParticipantProfile(order_chat_id=pk, participant_id=user_id)
             participant.save()
             return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
     @action(detail=True, methods=['PUT'])
     def out(self, request, pk=None):
