@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     'article',
     'chat',
     'channels',
+
+    'push_notification',
 ]
 
 ASGI_APPLICATION = 'gatgu.routing.application'
@@ -253,3 +255,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     'http://localhost:3000',
 # ]
 
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("firebase-admin-gatgu.json")
+firebase_admin.initialize_app(cred)

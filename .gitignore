@@ -392,3 +392,6 @@ secrets.json
 
 # AWS files
 .aws/*
+
+# FireBaseConf
+firebase-admin-gatgu.json
